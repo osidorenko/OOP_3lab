@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="jackson-annotations-2.12.3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jackson-annotations-2.12.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-core-2.12.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-databind-2.12.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-dataformat-yaml-2.12.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/snakeyaml-1.27.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
