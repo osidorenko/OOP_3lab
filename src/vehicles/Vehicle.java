@@ -45,6 +45,20 @@ public class Vehicle implements Serializable, VehicleInterface {
         return vtype;
     }
 
+    @Override
+    public boolean isInit() {
+        if(!name.equals("")){
+            if(!firm.equals("")){
+                if(!mtype.equals(null)){
+                    if(maxSpeed!=0){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public void setVtype(vehicleType vtype) {
         this.vtype = vtype;
     }

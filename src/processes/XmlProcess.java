@@ -36,6 +36,9 @@ public class XmlProcess implements ProcessInterface
 
     @Override
     public ArrayList deSerialization(String path) {
+        if(path.equals("")){
+            path = "C:\\tmp\\Vehicle2.xml";
+        }
         try {
             ObjectMapper m = new ObjectMapper(new XmlFactory());
             ArrayList list = m.readValue(new File(path), ArrayList.class);

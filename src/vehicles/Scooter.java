@@ -7,10 +7,10 @@ import java.util.LinkedHashMap;
 //@XmlType(name = "scooter")
 @XmlRootElement
 public class Scooter extends TwoWheeledVehicle implements Serializable {
-    private int powerReserve=0;
+    private int powerReserve = 0;
 
     public Scooter() {
-
+        this.setVtype(vehicleType.scooter);
     }
 
     public Scooter(Vehicle v) {
@@ -52,6 +52,6 @@ public class Scooter extends TwoWheeledVehicle implements Serializable {
     public String toString() {
         return "Scooter{" +
                 "powerReserve=" + powerReserve +
-                super.toString()+'}';
+                super.toString() + '}';
     }
 }

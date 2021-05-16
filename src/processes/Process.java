@@ -1,5 +1,6 @@
 package processes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Process {
@@ -19,7 +20,7 @@ public class Process {
         process.Serialization(list, path);
     }
 
-    public void doDeSerial(String path) {
-        process.deSerialization(path);
+    public ArrayList doDeSerial(String path) {
+        return process.deSerialization(path);
     }
 }

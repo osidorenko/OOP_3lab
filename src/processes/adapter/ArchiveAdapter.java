@@ -12,13 +12,13 @@ public class ArchiveAdapter implements ProcessInterface {
     private ArchiveProcess process;
     private ObjectMapper mapper = new ObjectMapper();
 
-    public ArchiveAdapter(ArchiveProcess pprocess) {
-        this.process = pprocess;
+    public ArchiveAdapter() {
+        this.process = new ArchiveProcess();
     }
 
     @Override
     public void Serialization(List list) {
-        File f = new File("C:\\tmp\\tmp.txt");
+        File f = new File("C:\\tmp\\tmp.json");
         try {
             mapper.writeValue(f, list);
         } catch (Exception e) {
@@ -46,11 +46,11 @@ public class ArchiveAdapter implements ProcessInterface {
         }
         String s = process.reArchive(path);
         try {
-            ArrayList list = mapper.readValue(s, ArrayList.class);
+            ArrayList list = mapper.readValue(new File(s), ArrayList.class);
             return list;
         } catch (Exception e) {
-
+            return null;
         }
-        return null;
+
     }
 }

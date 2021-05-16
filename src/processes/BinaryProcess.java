@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BinaryProcess implements ProcessInterface {
+
+    @Override
     public ArrayList deSerialization(String path) {
         if (path.equals("")) {
             path = "C:\\tmp\\Vehicle1.txt";
@@ -34,6 +36,7 @@ public class BinaryProcess implements ProcessInterface {
         }
     }
 
+    @Override
     public void Serialization(List list) {
         try {
             ByteArrayOutputStream b = new ByteArrayOutputStream();

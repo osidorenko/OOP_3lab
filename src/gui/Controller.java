@@ -1,6 +1,8 @@
 package gui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gui.proxy.FakeVehicles;
+import gui.proxy.RealVehicles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,7 +15,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import processes.*;
+import processes.Process;
+import processes.adapter.ArchiveAdapter;
+import processes.adapter.EncryptionAdapter;
 import vehicles.*;
+import vehicles.composite.Vehicles;
 
 
 import java.awt.Button;
@@ -21,6 +27,7 @@ import java.awt.Button;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.zip.ZipEntry;
@@ -28,117 +35,122 @@ import java.util.zip.ZipInputStream;
 
 public class Controller {
     //MAIN LIST OF VEHICLES
-    ArrayList vehicles = new ArrayList();
+    Vehicles vehicles = new Vehicles();
+    RealVehicles realVehicles;
+    FakeVehicles fakeVehicles;
 
     //MAIN METHODS CONNECTED WITH PROCESSING DATA
     public String getPath() {
         String s = pathfield.getText();
         File f = new File(s);
         if (!f.isFile()) {
-            statefield.setText("Файл не существует");
+            statefield.setText("использвуется стандартный файл для данного формата");
             return "";
         }
         return s;
     }
 
-    private void getList(ArrayList<LinkedHashMap> list) {
-        if (list == null) {
-            return;
-        }
-        vehicles.clear();
-        try {
-            for (int i = 0; i < list.size(); i++) {
-                vehicleType t = vehicleType.valueOf(list.get(i).get("vtype").toString());
-                if (t.equals(vehicleType.lightvehicle)) {
-                    vehicles.add(new LightVehicle(list.get(i)));
-                } else {
-                    if (t.equals(vehicleType.freightveicle)) {
-                        vehicles.add(new FreightVehicle(list.get(i)));
-                    } else {
-                        if (t.equals(vehicleType.electriccar)) {
-                            vehicles.add(new ElectricCar(list.get(i)));
-                        } else {
-                            if (t.equals(vehicleType.motocycle)) {
-                                vehicles.add(new Motocycle(list.get(i)));
-                            } else {
-                                if (t.equals(vehicleType.scooter)) {
-                                    vehicles.add(new Scooter(list.get(i)));
-                                } else {
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            statefield.setText("Не известное содержимое");
-        }
-      //  Switch s = new Switch(new Serialization(new Process(new EncryptionAdapter()),vehicles),new DeSerialialization(new Process(new JsonProcess()),""));
-
-    }
-
     public void loadList(int i, String path) {
         if (path.equals("")) {
-            return;
+
         }
-
-
+        Process process;
         ArrayList list = new ArrayList();
         switch (i) {
             case 0: {
-                list = deSerialBinary(path);
+                process = new Process(new BinaryProcess());
+                list = process.doDeSerial(path);
+                //list = deSerialBinary(path);
                 if (list != null) {
-                    vehicles = list;
+                    //vehicles = list;
                     statefield.setText("Данные Binary загружены ");
+                    for (int j = 0; j < list.size(); j++) {
+                        vehicles.add((VehicleInterface) list.get(j));
+                    }
                 }
                 return;
             }
             case 1: {
-                list = deSerialXML(path);
+                process = new Process(new XmlProcess());
+                list = process.doDeSerial(path);
+                //list = deSerialXML(path);
                 if (list != null) {
-                    getList(list);
+                    vehicles.add(new Vehicles(list));
                     statefield.setText("Данные XML загружены ");
                 }
                 return;
             }
             case 2: {
-                list = deSerialYAML(path);
+                //list = deSerialYAML(path);
+                process = new Process(new YamlProcess());
+                list = process.doDeSerial(path);
                 if (list != null) {
-                    getList(list);
+                    vehicles.add(new Vehicles(list));
                     statefield.setText("Данные YAML загружены ");
                 }
                 return;
             }
             case 3: {
-                list = getJson(path);
+                process = new Process(new JsonProcess());
+                list = process.doDeSerial(path);
                 if (list != null) {
-                    getList(list);
+                    vehicles.add(new Vehicles(list));
                     statefield.setText("Данные JSON загружены ");
                 }
                 return;
             }
             case 4: {
-
-                ReadZip(path);
+                process = new Process(new ArchiveAdapter());
+                list = process.doDeSerial(path);
+                if (list != null) {
+                    vehicles.add(new Vehicles(list));
+                }
+                //ReadZip(path);
                 statefield.setText("Данные из архива загружены ");
                 return;
             }
             case 5: {
-                EnCryptData(path);
-                if (vehicles.size() == 0) {
-                    statefield.setText("Из расшифрованных данных ничего не понятно ");
-                } else
+                process = new Process(new EncryptionAdapter());
+                list = process.doDeSerial(path);
+                //EnCryptData(path);
+                if (list != null) {
+                    vehicles.add(new Vehicles(list));
                     statefield.setText("Данные расшифрованы ");
+                }
                 return;
             }
         }
     }
 
+    public void pluginsUnLoad() {
+        z++;
+        PluginLoader tmp = pluginLoader;
+        vehicles.add(new Vehicles((ArrayList<LinkedHashMap>) tmp.unLoadPlugins()));
+    }
+
+    public void pluginsLoadArchive() {
+        z++;
+        PluginLoader tmp = pluginLoader;
+        if (realVehicles == null) {
+            realVehicles = new RealVehicles(vehicles);
+        }
+        tmp.loadPlugins(1, realVehicles.getList());
+
+    }
+
+    public void pluginsLoadEncryption() {
+        z++;
+        if (realVehicles == null) {
+            realVehicles = new RealVehicles(vehicles);
+        }
+        pluginLoader.loadPlugins(0, realVehicles.getList());
+    }
+
     public void auto() {
-        vehicles.clear();
         z++;
         String path = getPath();
         if (path.equals("")) {
+            statefield.setText("Файла не существует");
             return;
         }
         int len = path.length();
@@ -156,7 +168,7 @@ public class Controller {
                     } else {
                         if (path.substring(len - 3, len).equals("txt")) {
                             loadList(0, path);
-                            if (vehicles.size() == 0) {
+                            if (vehicles.getAllHash().size() == 0) {
                                 loadList(5, path);
                             }
                         }
@@ -164,90 +176,13 @@ public class Controller {
                 }
             }
         }
-        if (vehicles.size() == 0) {
-            for (int i = 0; i < 6; i++) {
-                loadList(i, path);
-                if (vehicles.size() != 0) {
-                    return;
-                }
-            }
-            statefield.setText("Не известный формат файла");
-        }
-
-    }
-
-
-    //DATA PROCESSING !!!
-    public void CrytData() {
-        try (FileWriter wr = new FileWriter("C:\\tmp\\Crypt.txt", false)) {
-            if (vehicles.size() == 0) {
-                statefield.setText("отсутствуют записываемые данные");
-                return;
-            }
-            ObjectMapper mapper = new ObjectMapper();
-            String data = mapper.writeValueAsString(vehicles);
-            Encryption e = new Encryption(data);
-            e.setCrypt(5);
-            e.write();
-            String writetofile = e.getEncrypted();
-            System.out.println(writetofile);
-
-            wr.write(writetofile);
-            wr.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void EnCryptData(String path) {
-        try {
-            Encryption e = new Encryption();
-            String ret = Files.readAllLines(new File(path).toPath()).get(0);
-            e.setEncrypted(ret);
-            String s = e.getCrypted(5);
-            ObjectMapper mapper = new ObjectMapper();
-            ArrayList list = mapper.readValue(s, ArrayList.class);
-            getList(list);
-
-        } catch (Exception e) {
-            statefield.setText("Файл не того формата");
-        }
-    }
-
-    public void CreateZip() {
-
-    }
-
-    public void ReadZip(String path) {
-        try (ZipInputStream zin = new ZipInputStream(new FileInputStream(path))) {
-            ZipEntry entry;
-            String name = "";
-            long size;
-            while ((entry = zin.getNextEntry()) != null) {
-                name = entry.getName();
-                FileOutputStream fout = new FileOutputStream("C:\\tmp\\A" + name);
-                for (int c = zin.read(); c != -1; c = zin.read()) {
-                    fout.write(c);
-                }
-                fout.flush();
-                zin.closeEntry();
-                fout.close();
-            }
-            ArrayList list = new ArrayList();
-            ObjectMapper mapper = new ObjectMapper();
-            list = mapper.readValue(new File("C:\\tmp\\A" + name), ArrayList.class);
-            getList(list);
-        } catch (Exception ex) {
-            //System.out.println(ex.getMessage());
-            statefield.setText("Файл не того формата");
-        }
     }
 
 
     //SERIALIZATION AND DESERIALIZATION
     public void XMLandJSON() {
         ArrayList list = new ArrayList();
-        list = deSerialXML("C:\\tmp\\Vehicle2.xml");
+//        list = deSerialXML("C:\\tmp\\Vehicle2.xml");
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(new File("C:\\tmp\\Vehicle3.json"), list);
@@ -260,44 +195,6 @@ public class Controller {
         }
     }
 
-    JsonProcess json = new JsonProcess();
-
-    public void SerialJson(List list) {
-        json.Serialization(list);
-    }
-
-    public ArrayList getJson(String path) {
-
-        return json.deSerialization(path);
-    }
-
-    private void SerialBinary(List list) {
-        binary.Serialization(list);
-    }
-    BinaryProcess binary = new BinaryProcess();
-    private ArrayList<Vehicle> deSerialBinary(String path) {
-        return binary.deSerialization(path);
-    }
-
-    YamlProcess yaml = new YamlProcess();
-
-    private void SerialYAML(List list) {
-        yaml.Serialization(list);
-    }
-
-    private ArrayList deSerialYAML(String path) {
-        return yaml.deSerialization(path);
-    }
-
-    XmlProcess xml = new XmlProcess();
-
-    private void SerialXML(List list) {
-        xml.Serialization(list);
-    }
-
-    private ArrayList deSerialXML(String path) {
-        return xml.deSerialization(path);
-    }
 
     //GET INFORMATION FROM FILE
     public void Json() {
@@ -330,47 +227,91 @@ public class Controller {
         loadList(2, getPath());
     }
 
+    private static PluginLoader pluginLoader = new PluginLoader(new ArrayList<>(Arrays.asList(new CrtPl(new Encryption()), new ArchPl())));
+
+    private int writeList(int i) {
+        Process process;
+        if (realVehicles == null) {
+            realVehicles = new RealVehicles(vehicles);
+        }
+        ArrayList list = realVehicles.getList();
+        if (realVehicles.size() != 0) {
+            switch (i) {
+                case 0: {
+                    process = new Process(new BinaryProcess());
+                    process.doSerial(list);
+                    return 0;
+                }
+                case 1: {
+                    process = new Process(new XmlProcess());
+                    process.doSerial(list);
+                    return 0;
+                }
+                case 2: {
+                    process = new Process(new YamlProcess());
+                    process.doSerial(list);
+                    return 0;
+                }
+                case 3: {
+                    process = new Process(new JsonProcess());
+                    process.doSerial(list);
+                    return 0;
+                }
+                case 4: {
+                    process = new Process(new ArchiveAdapter());
+                    process.doSerial(list);
+                    return 0;
+                }
+                case 5: {
+                    process = new Process(new EncryptionAdapter());
+                    process.doSerial(list);
+                    return 0;
+                }
+            }
+        }
+        return -1;
+    }
+
     //WRITE INFORMATION TO FILE
+    public void CreateZip() {
+        if (writeList(4) == 0) {
+            statefield.setText("Данные архивированы и выгружены на диск");
+        } else statefield.setText("отсутствуют записываемые данные");
+    }
+
+    public void CrytData() {
+        if (writeList(5) == 0) {
+            statefield.setText("Данные зашифрованы и выгружены на диск");
+        } else statefield.setText("отсутствуют записываемые данные");
+    }
+
     public void toXML() {
-        if (vehicles.size() != 0) {
-            SerialXML(vehicles);
+        if (writeList(1) == 0) {
             statefield.setText("Данные xml выгружены на диск");
         } else statefield.setText("отсутствуют записываемые данные");
     }
 
     public void toYAML() {
-        if (vehicles.size() != 0) {
-            SerialYAML(vehicles);
+        if (writeList(2) == 0) {
             statefield.setText("Данные yaml выгружены на диск");
         } else statefield.setText("отсутствуют записываемые данные");
     }
 
     public void toBinary() {
-        if (vehicles.size() != 0) {
-            SerialBinary(vehicles);
+        if (writeList(0) == 0) {
             statefield.setText("Данные binary выгружены на диск");
         } else statefield.setText("отсутствуют записываемые данные");
     }
 
     public void toJson() {
-        if (vehicles.size() != 0) {
-            SerialJson(vehicles);
+        if (writeList(3) == 0) {
             statefield.setText("Данные json выгружены на диск");
         } else statefield.setText("отсутствуют записываемые данные");
     }
 
+
     public void toFile() {
-        if (vehicles.size() == 0) {
-            statefield.setText("Отсутствуют записываемые данные");
-            return;
-        }
-        SerialXML(vehicles);
-        SerialBinary(vehicles);
-        SerialYAML(vehicles);
-        SerialJson(vehicles);
-        CrytData();
-        CreateZip();
-        statefield.setText("Данные выгружены на диск");
+
     }
 
 
@@ -378,6 +319,17 @@ public class Controller {
     public void goData() {
         main.setVisible(false);
         datapane.setVisible(true);
+        vehicles.clear();
+
+        if (realVehicles != null) {
+            ArrayList list = realVehicles.getList();
+            for (int i = 0; i < list.size(); i++) {
+                vehicles.add((VehicleInterface) list.get(i));
+            }
+            realVehicles = null;
+            fakeVehicles = null;
+        }
+
         pathfield.setText("C:\\tmp\\");
     }
 
@@ -388,12 +340,15 @@ public class Controller {
 
     public void change() {
         Vehicle v = newVehicle();
-        vehicles.set(currentID, v);
+        realVehicles.change(currentID, v);
+        fakeVehicles.change(currentID, v);
     }
 
     public void addVehicle() {
         Vehicle v = newVehicle();
-        vehicles.add(v);
+        fakeVehicles.add(v);
+        realVehicles.add(v);
+        //vehicles.add(v);
     }
 
     public Vehicle newVehicle() {
@@ -516,6 +471,9 @@ public class Controller {
         else {
             return;
         }
+        if (fakeVehicles == null) {
+            fakeVehicles = new FakeVehicles(vehicles);
+        }
         main.setVisible(false);
         list.setVisible(true);
         goList();
@@ -523,7 +481,11 @@ public class Controller {
 
     public void delete() {
         int k = table.getSelectionModel().getFocusedIndex();
-        vehicles.remove(k);
+        fakeVehicles.remove(k);
+        if (realVehicles == null) {
+            realVehicles = new RealVehicles(vehicles);
+        }
+        realVehicles.remove(k);
         goList();
     }
 
@@ -784,14 +746,17 @@ public class Controller {
         list.add(f);
         list.add(moto);
         list.add(moto2);
-        SerialXML(list);
+
         list.add(s);
-        SerialBinary(list);
-        SerialYAML(list);
+
+
     }
 
     public void paneGoView() {
         int k = table.getSelectionModel().getFocusedIndex();
+        if (realVehicles == null) {
+            realVehicles = new RealVehicles(vehicles);
+        }
         loadView(k, null);
         view.setVisible(true);
         list.setVisible(false);
@@ -800,6 +765,7 @@ public class Controller {
     private Vehicle currentVehicle = new Vehicle();
 
     public void loadView(int i, Vehicle tmp) {
+        ArrayList vehicles = realVehicles.getList();
         param1.setVisible(false);
         tpar1.setVisible(false);
         param2.setVisible(false);
@@ -939,8 +905,11 @@ public class Controller {
 
     public void goList() {
         //loadList(0);
+        ArrayList<VehicleTable> t = fakeVehicles.getList();
         arr.clear();
-        for (int i = 0; i < vehicles.size(); i++) {
+        arr.addAll(t);
+
+        /*for (int i = 0; i < vehicles.size(); i++) {
             String p1 = "";
             String p2 = "";
             String p3 = "";
@@ -995,7 +964,7 @@ public class Controller {
                 }
             }
             arr.add(new VehicleTable(p1, p2, p3, p4, p5, p6));
-        }
+        }*/
         k1.setCellValueFactory(new PropertyValueFactory<VehicleTable, String>("type"));
         k2.setCellValueFactory(new PropertyValueFactory<VehicleTable, String>("name"));
         k3.setCellValueFactory(new PropertyValueFactory<VehicleTable, String>("firm"));

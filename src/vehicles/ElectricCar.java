@@ -43,7 +43,8 @@ public class ElectricCar extends LightVehicle  implements Serializable {
     }
 
     public ElectricCar() {
-        super();
+        super.setVtype(vehicleType.electriccar);
+        //super();
     }
 
     @Override

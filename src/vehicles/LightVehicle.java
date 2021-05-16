@@ -83,6 +83,7 @@ public class LightVehicle extends Vehicle implements Serializable{
 
 
     public LightVehicle() {
+        this.setVtype(vehicleType.lightvehicle);
 
     }
 

@@ -56,6 +56,7 @@ public class Motocycle extends TwoWheeledVehicle implements Serializable {
     }
 
     public Motocycle(){
+        this.setVtype(vehicleType.motocycle);
 
     }
 

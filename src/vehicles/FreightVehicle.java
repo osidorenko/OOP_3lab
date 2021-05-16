@@ -17,6 +17,7 @@ public class FreightVehicle extends Vehicle implements Serializable {
     private int maxWeight = 0;
 
     public FreightVehicle() {
+        this.setVtype(vehicleType.freightveicle);
 
     }
 
