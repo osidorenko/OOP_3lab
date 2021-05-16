@@ -1,24 +1,43 @@
-package sample;
+package vehicles;
 
 
 import javax.xml.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
 
 
 //@XmlType(name = "vehicle")
 @XmlAccessorType(XmlAccessType.FIELD)
 //@XmlRootElement
-public class Vehicle implements Serializable {
-    private String name;
-    private String firm;
-    private int maxSpeed;
-    private MotorType mtype;
+public class Vehicle implements Serializable, VehicleInterface {
+    private String name = "";
+    private String firm = "";
+    private int maxSpeed = 0;
+    private MotorType mtype = MotorType.petrol;
     private vehicleType vtype;
 
     private int passengers;
+
     public Vehicle() {
 
+    }
+
+    public Vehicle(Vehicle v) {
+        name = v.getName();
+        firm = v.getFirm();
+        maxSpeed = v.getMaxSpeed();
+        mtype = v.getMtype();
+        vtype = v.getVtype();
+        passengers = v.getPassengers();
+    }
+
+    public Vehicle(LinkedHashMap map) {
+        setPassengers(Integer.decode(map.get("passengers").toString()));
+        setFirm(map.get("firm").toString());
+        setName(map.get("name").toString());
+        setMtype(MotorType.valueOf(map.get("mtype").toString()));
+        setMaxSpeed(Integer.decode(map.get("maxSpeed").toString()));
     }
 
 
@@ -103,6 +122,13 @@ public class Vehicle implements Serializable {
     }
 
 
-
+    @Override
+    public void create(LinkedHashMap map) {
+        setPassengers(Integer.decode(map.get("passengers").toString()));
+        setFirm(map.get("firm").toString());
+        setName(map.get("name").toString());
+        setMtype(MotorType.valueOf(map.get("mtype").toString()));
+        setMaxSpeed(Integer.decode(map.get("maxSpeed").toString()));
+    }
 }
 

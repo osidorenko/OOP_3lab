@@ -1,23 +1,30 @@
-package sample;
+package vehicles;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.util.LinkedHashMap;
 
 //@XmlType(name = "electriccar")
 //@XmlRootElement
 
 public class ElectricCar extends LightVehicle  implements Serializable {
-    private int powerReserve;
+    private int powerReserve=0;
 
     public ElectricCar(String name) {
         super(name);
         super.setMtype(MotorType.electric);
+    }
+
+    public ElectricCar(Vehicle v) {
+        super(v);
+    }
+
+    @Override
+    public void create(LinkedHashMap map) {
+        super.create(map);
+        super.setVtype(vehicleType.electriccar);
+        super.setMtype(MotorType.electric);
+        this.powerReserve = Integer.decode(map.get("powerReserve").toString());
+
     }
 
     @Override
@@ -37,11 +44,6 @@ public class ElectricCar extends LightVehicle  implements Serializable {
 
     public ElectricCar() {
         super();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
     }
 
     @Override
@@ -103,9 +105,13 @@ public class ElectricCar extends LightVehicle  implements Serializable {
         super.setHp(hp);
     }
 
-    public ElectricCar(String name, int maxSpeed, boolean isAutoTransmission, int hp, bodyType bt) {
-        super(name, maxSpeed, isAutoTransmission, hp,bt);
+
+
+    public ElectricCar(String name, String firm, int maxSpeed, int passengers, boolean isAutoTransmission, bodyType btype, int hp, int powerReserve) {
+        super(name, firm, maxSpeed, passengers, isAutoTransmission, btype, hp);
+        super.setVtype(vehicleType.electriccar);
         super.setMtype(MotorType.electric);
+        this.powerReserve = powerReserve;
     }
 
     public int getPowerReserve() {
@@ -116,5 +122,22 @@ public class ElectricCar extends LightVehicle  implements Serializable {
         this.powerReserve = powerReserve;
     }
 
+    public ElectricCar(LinkedHashMap map) {
+        super(map);
+        super.setVtype(vehicleType.electriccar);
+        super.setMtype(MotorType.electric);
 
+        //this.setVtype(vehicleType.electriccar);
+        //this.setMtype(MotorType.electric);
+        this.powerReserve = Integer.decode(map.get("powerReserve").toString());
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "ElectricCar{" +
+                "powerReserve=" + powerReserve +
+                super.toString()+'}';
+    }
 }

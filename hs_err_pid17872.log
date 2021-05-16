@@ -173,10 +173,10 @@ Event: 14.092 Thread 0x000000001fe9d800 Uncommon trap: reason=unstable_if action
 Event: 14.093 Thread 0x000000001fe9d800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000035607d0 method=java.lang.AbstractStringBuilder.append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; @ 1
 
 Classes redefined (4 events):
-Event: 292.183 Thread 0x000000001ccf9800 redefined class name=sample.Main, count=1
-Event: 292.189 Thread 0x000000001ccf9800 redefined class name=sample.Controller, count=1
-Event: 292.194 Thread 0x000000001ccf9800 redefined class name=sample.XMLList, count=1
-Event: 318.902 Thread 0x000000001ccf9800 redefined class name=sample.Controller, count=2
+Event: 292.183 Thread 0x000000001ccf9800 redefined class name=gui.Main, count=1
+Event: 292.189 Thread 0x000000001ccf9800 redefined class name=gui.Controller, count=1
+Event: 292.194 Thread 0x000000001ccf9800 redefined class name=vehicles.XMLList, count=1
+Event: 318.902 Thread 0x000000001ccf9800 redefined class name=gui.Controller, count=2
 
 Internal exceptions (10 events):
 Event: 7.902 Thread 0x000000001fe9d800 Exception <a 'java/lang/ClassNotFoundException': com/sun/org/glassfish/hk2/osgiresourcelocator/ServiceLoader> (0x000000076b84dce0) thrown at [C:\ade\jenkins\workspace\8-2-build-windows-amd64-cygwin\jdk8u241\331\hotspot\src\share\vm\classfile\systemDiction
@@ -332,7 +332,7 @@ Dynamic libraries:
 
 VM Arguments:
 jvm_args: -agentlib:jdwp=transport=dt_socket,address=127.0.0.1:58991,suspend=y,server=n -javaagent:C:\Users\oleg\.IntelliJIdea2018.2\system\captureAgent\debugger-agent.jar=file:/C:/Users/oleg/AppData/Local/Temp/capture.props -Dfile.encoding=UTF-8 
-java_command: sample.Main
+java_command: gui.Main
 java_class_path (initial): C:\Program Files\Java\jdk1.8.0_241\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\deploy.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\ext\jfxrt.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\ext\nashorn.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\ext\zipfs.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\javaws.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\jfxswt.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\management-agent.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\plugin.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\rt.jar;C:\Users\oleg\IdeaProjects\OOplab_3\out\production\OOplab_3;C:\Users\oleg\IdeaProjects\OOplab_3\lib\jackson-annotations-2.12.3.jar;C:\Users\oleg\IdeaProjects\OOplab_3\lib\jackson-core-2.12.3.jar;C:\Users\oleg\IdeaProjects\OOplab_3\lib\jackson-databind-2.12.3.jar;C:\Users\oleg\IdeaProjects\OOplab_3\lib\jackson-dataformat-yaml-2.12.3.jar;C:\Users\oleg\IdeaProjects\OOplab_3\lib\snakeyaml-1.27.jar;C:\Users\oleg\IdeaProjects\OOplab_3\lib\bson-3.2.2.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2018.2.5\lib\idea_rt.jar;C:\Users\oleg\.IntelliJIdea2018.2\system\captureAgent\debugger-agent.jar
 Launcher Type: SUN_STANDARD
 
@@ -356,6 +356,6 @@ Memory: 4k page, physical 16644880k(8012712k free), swap 22775608k(3225588k free
 vm_info: Java HotSpot(TM) 64-Bit Server VM (25.241-b07) for windows-amd64 JRE (1.8.0_241-b07), built on Dec 11 2019 10:21:40 by "rejava" with MS VC++ 10.0 (VS2010)
 
 time: Tue Apr 27 21:18:43 2021
-timezone: RTZ 2 (зима)
+timezone: RTZ 2 (пїЅпїЅпїЅпїЅ)
 elapsed time: 319 seconds (0d 0h 5m 19s)
 

@@ -1,39 +1,21 @@
-package sample;
+package vehicles;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import java.io.File;
 import java.io.Serializable;
-import java.io.StringReader;
-import java.io.StringWriter;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import org.omg.PortableServer.ServantRetentionPolicy;
-
-import java.util.HashMap;
-import java.util.Map;
-
-
+import java.util.LinkedHashMap;
 
 
 //@XmlType(name = "LightVehicle")
 //@XmlRootElement
 
-public class LightVehicle extends Vehicle implements Serializable {
+public class LightVehicle extends Vehicle implements Serializable{
 
-    private boolean isAutoTransmission;
+    private boolean isAutoTransmission = false;
 
-    private bodyType btype;
+    private bodyType btype = bodyType.sedan;
     @XmlAttribute
-    private int hp;
+    private int hp=0;
 
     @Override
     public String getFirm() {
@@ -51,15 +33,36 @@ public class LightVehicle extends Vehicle implements Serializable {
         super.setVtype(vehicleType.lightvehicle);
     }
 
+    public LightVehicle(Vehicle v) {
+        super(v);
 
-    public LightVehicle(String name, int maxSpeed, boolean isAutoTransmission, int hp, bodyType pbtype) {
-        super(name, maxSpeed);
-        super.setPassengers(5);
-        this.isAutoTransmission = isAutoTransmission;
-        this.hp = hp;
-        super.setMtype(MotorType.petrol);
+    }
+
+    public LightVehicle(LinkedHashMap map) {
+        super(map);
         super.setVtype(vehicleType.lightvehicle);
-        this.btype = pbtype;
+        this.btype = bodyType.valueOf(map.get("btype").toString());
+        this.hp = Integer.decode(map.get("hp").toString());
+        this.isAutoTransmission = Boolean.valueOf(map.get("autoTransmission").toString());
+
+    }
+
+    @Override
+    public void create(LinkedHashMap map) {
+        super.create(map);
+        super.setVtype(vehicleType.lightvehicle);
+        this.btype = bodyType.valueOf(map.get("btype").toString());
+        this.hp = Integer.decode(map.get("hp").toString());
+        this.isAutoTransmission = Boolean.valueOf(map.get("autoTransmission").toString());
+
+    }
+
+    public LightVehicle(String name, String firm, int maxSpeed, int pas, boolean isAutoTransmission, bodyType btype, int hp) {
+        super(name, firm, maxSpeed, pas);
+        super.setVtype(vehicleType.lightvehicle);
+        this.isAutoTransmission = isAutoTransmission;
+        this.btype = btype;
+        this.hp = hp;
     }
 
     @Override
@@ -67,21 +70,22 @@ public class LightVehicle extends Vehicle implements Serializable {
         return "LightVehicle{" +
                 "isAutoTransmission=" + isAutoTransmission +
                 ", btype=" + btype +
-                ", hp=" + hp +" "+super.toString()+
+                ", hp=" + hp + " " + super.toString() +
                 '}';
     }
 
     @Override
     public void setMtype(MotorType mtype) {
-        if (mtype.equals(MotorType.electric)) {
-            return;
-        }
+
+
         super.setMtype(mtype);
     }
 
-    public LightVehicle(){
+
+    public LightVehicle() {
 
     }
+
     @Override
     public int getMaxSpeed() {
         return super.getMaxSpeed();
@@ -91,7 +95,6 @@ public class LightVehicle extends Vehicle implements Serializable {
     public void setMaxSpeed(int maxSpeed) {
         super.setMaxSpeed(maxSpeed);
     }
-
 
 
     @Override

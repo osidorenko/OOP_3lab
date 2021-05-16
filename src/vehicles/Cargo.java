@@ -1,4 +1,4 @@
-package sample;
+package vehicles;
 
 import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;

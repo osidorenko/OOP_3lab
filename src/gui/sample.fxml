@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
+   <children>
+      <Pane fx:id="main" layoutX="1.0" prefHeight="600.0" prefWidth="800.0">
+         <children>
+            <Button layoutX="309.0" layoutY="504.0" mnemonicParsing="false" onAction="#exit" prefHeight="58.0" prefWidth="182.0" text="Выход" />
+            <Button layoutX="309.0" layoutY="156.0" mnemonicParsing="false" onAction="#paneGoList" prefHeight="52.0" prefWidth="182.0" text="Просмотреть" />
+            <Line endX="700.0" layoutX="100.0" layoutY="85.0" startX="-100.0" />
+            <Label layoutX="335.0" layoutY="26.0" text="Автопарк">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Button layoutX="309.0" layoutY="236.0" mnemonicParsing="false" onAction="#goData" prefHeight="52.0" prefWidth="182.0" text="Обработка данных" />
+         </children>
+      </Pane>
+      <Pane fx:id="list" prefHeight="600.0" prefWidth="801.0" visible="false">
+         <children>
+            <Button layoutX="619.0" layoutY="540.0" mnemonicParsing="false" onAction="#GoMain" prefHeight="39.0" prefWidth="147.0" text="Назад" />
+            <Button layoutX="36.0" layoutY="484.0" mnemonicParsing="false" onAction="#paneGoView" prefHeight="39.0" prefWidth="147.0" text="Просмотреть" />
+            <Button layoutX="36.0" layoutY="540.0" mnemonicParsing="false" onAction="#delete" prefHeight="39.0" prefWidth="147.0" text="Удалить" />
+            <TableView fx:id="table" layoutX="14.0" layoutY="14.0" prefHeight="463.0" prefWidth="775.0">
+              <columns>
+                <TableColumn fx:id="k1" prefWidth="147.0" text="Тип" />
+                <TableColumn fx:id="k2" prefWidth="104.0" text="Имя" />
+                  <TableColumn fx:id="k3" prefWidth="145.0" text="Производитель" />
+                  <TableColumn fx:id="k4" prefWidth="99.0" text="Скорость" />
+                  <TableColumn fx:id="k5" prefWidth="123.0" text="Пассажиры" />
+                  <TableColumn fx:id="k6" prefWidth="156.0" text="Двигатель" />
+              </columns>
+            </TableView>
+         </children>
+      </Pane>
+      <Pane fx:id="view" prefHeight="600.0" prefWidth="801.0" visible="false">
+         <children>
+            <Label layoutX="233.0" layoutY="27.0" text="Транспортное средство ">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Line endX="700.0" layoutX="100.0" layoutY="92.0" startX="-100.0" />
+            <TextField fx:id="tname" layoutX="205.0" layoutY="177.0" prefHeight="39.0" prefWidth="182.0" />
+            <Label layoutX="46.0" layoutY="177.0" text="Название" />
+            <Label layoutX="46.0" layoutY="226.0" text="Производитель" />
+            <TextField fx:id="tfirm" layoutX="205.0" layoutY="226.0" prefHeight="39.0" prefWidth="182.0" />
+            <Label layoutX="43.0" layoutY="280.0" lineSpacing="1.0" prefHeight="33.0" prefWidth="197.0" text="Скорость,км/ч" />
+            <TextField fx:id="tspeed" layoutX="205.0" layoutY="277.0" prefHeight="39.0" prefWidth="182.0" />
+            <Label layoutX="46.0" layoutY="335.0" text="Двигатель" />
+            <TextField fx:id="tmotor" layoutX="205.0" layoutY="329.0" prefHeight="39.0" prefWidth="182.0">
+               <contextMenu>
+                  <ContextMenu fx:id="motormenu">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu></TextField>
+            <Label layoutX="46.0" layoutY="395.0" text="Пассажиры" />
+            <TextField fx:id="tpassag" layoutX="205.0" layoutY="384.0" prefHeight="39.0" prefWidth="182.0" />
+            <Label layoutX="46.0" layoutY="121.0" text="Тип" />
+            <TextField fx:id="tpar1" layoutX="572.0" layoutY="126.0" prefHeight="39.0" prefWidth="182.0">
+               <contextMenu>
+                  <ContextMenu fx:id="bodymenu">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu></TextField>
+            <Label fx:id="param1" layoutX="413.0" layoutY="135.0" text="param1" />
+            <TextField fx:id="tpar6" layoutX="572.0" layoutY="389.0" prefHeight="39.0" prefWidth="182.0" />
+            <Label fx:id="param6" layoutX="413.0" layoutY="398.0" text="param6" />
+            <TextField fx:id="tpar5" layoutX="572.0" layoutY="334.0" prefHeight="39.0" prefWidth="182.0" />
+            <Label fx:id="param5" layoutX="413.0" layoutY="340.0" text="param5" />
+            <TextField fx:id="tpar4" layoutX="572.0" layoutY="282.0" prefHeight="39.0" prefWidth="182.0" />
+            <Label fx:id="param4" layoutX="413.0" layoutY="264.0" lineSpacing="1.0" prefHeight="76.0" prefWidth="197.0" text="param4" />
+            <TextField fx:id="tpar3" layoutX="572.0" layoutY="231.0" prefHeight="39.0" prefWidth="182.0" />
+            <Label fx:id="param3" layoutX="413.0" layoutY="237.0" text="param3" />
+            <Label fx:id="param2" layoutX="413.0" layoutY="191.0" text="param2" />
+            <TextField fx:id="tpar2" layoutX="572.0" layoutY="182.0" prefHeight="39.0" prefWidth="182.0">
+               <contextMenu>
+                  <ContextMenu fx:id="cargomenu">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu></TextField>
+            <TextField fx:id="ttype" layoutX="202.0" layoutY="120.0" prefHeight="39.0" prefWidth="182.0">
+               <contextMenu>
+                  <ContextMenu fx:id="typemenu">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu></TextField>
+            <Button layoutX="342.0" layoutY="541.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="117.0" text="Назад" />
+            <Button layoutX="52.0" layoutY="481.0" mnemonicParsing="false" onAction="#change" prefHeight="39.0" prefWidth="111.0" text="Заменить" />
+            <Button layoutX="345.0" layoutY="481.0" mnemonicParsing="false" onAction="#placeClear" prefHeight="39.0" prefWidth="111.0" text="Очистить" />
+            <Button layoutX="619.0" layoutY="481.0" mnemonicParsing="false" onAction="#addVehicle" prefHeight="39.0" prefWidth="128.0" text="Добавить" />
+
+         </children>
+      </Pane>
+      <Pane fx:id="datapane" prefHeight="600.0" prefWidth="800.0" visible="false">
+         <children>
+            <Button layoutX="36.0" layoutY="466.0" mnemonicParsing="false" onAction="#XML" prefHeight="39.0" prefWidth="164.0" text="Загрузить XML" />
+            <Button layoutX="36.0" layoutY="341.0" mnemonicParsing="false" onAction="#Binary" prefHeight="39.0" prefWidth="164.0" text="Загрузить Binary" />
+            <Button layoutX="36.0" layoutY="399.0" mnemonicParsing="false" onAction="#YAML" prefHeight="39.0" prefWidth="164.0" text="Загрузить YAML" />
+            <Button layoutX="536.0" layoutY="537.0" mnemonicParsing="false" onAction="#toFile" prefHeight="39.0" prefWidth="164.0" text="Выгрузить все" />
+            <Button layoutX="229.0" layoutY="466.0" mnemonicParsing="false" onAction="#Json" prefHeight="39.0" prefWidth="175.0" text="Загрузить JSON" />
+            <Button layoutX="234.0" layoutY="400.0" mnemonicParsing="false" onAction="#ZIP" text="Разорхивировать" />
+            <Button layoutX="447.0" layoutY="400.0" mnemonicParsing="false" onAction="#CreateZip" prefHeight="39.0" prefWidth="164.0" text="Архивировать" />
+            <Button layoutX="231.0" layoutY="341.0" mnemonicParsing="false" onAction="#Cryptography" prefHeight="39.0" prefWidth="167.0" text="Расшифровать" />
+            <Button layoutX="447.0" layoutY="341.0" mnemonicParsing="false" onAction="#CrytData" prefHeight="39.0" prefWidth="164.0" text="Шифровать" />
+            <Button layoutX="618.0" layoutY="341.0" mnemonicParsing="false" onAction="#toYAML" text="Выгрузить YAML" />
+            <Button layoutX="623.0" layoutY="400.0" mnemonicParsing="false" onAction="#toXML" prefHeight="39.0" prefWidth="156.0" text="Выгрузить XML" />
+            <Button layoutX="620.0" layoutY="466.0" mnemonicParsing="false" onAction="#toBinary" text="Выгрузить Binary" />
+            <Button layoutX="451.0" layoutY="466.0" mnemonicParsing="false" onAction="#toJson" text="Выгрузить JSON" />
+            <Button layoutX="32.0" layoutY="537.0" mnemonicParsing="false" onAction="#XMLandJSON" prefHeight="39.0" prefWidth="283.0" text="Трансформация XML-&gt;JSON" />
+            <Line endX="700.0" layoutX="101.0" layoutY="311.0" startX="-100.0" />
+            <Line endX="-100.0" endY="200.0" layoutX="522.0" layoutY="312.0" startX="-100.0" />
+            <TextField fx:id="pathfield" layoutX="32.0" layoutY="139.0" prefHeight="39.0" prefWidth="367.0" />
+            <Label layoutX="197.0" layoutY="100.0" text="Путь" />
+            <TextField fx:id="statefield" layoutX="451.0" layoutY="139.0" prefHeight="39.0" prefWidth="320.0" />
+            <Button layoutX="381.0" layoutY="537.0" mnemonicParsing="false" onAction="#GoMain" prefHeight="39.0" prefWidth="84.0" text="Назад" />
+            <Label layoutX="570.0" layoutY="100.0" text="Состояние" />
+            <Line endX="700.0" layoutX="102.0" layoutY="80.0" startX="-100.0" />
+            <Label layoutX="323.0" layoutY="27.0" text="Ручной Выбор Плагина " />
+            <Button layoutX="99.0" layoutY="210.0" mnemonicParsing="false" onAction="#auto" text="Автоматически загрузить" />
+         </children>
+      </Pane>
+   </children>
+</Pane>

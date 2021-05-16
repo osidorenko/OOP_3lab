@@ -1,4 +1,4 @@
-package sample;
+package vehicles;
 
 public enum bodyType {
     sedan,
